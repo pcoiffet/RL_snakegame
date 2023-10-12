@@ -10,12 +10,16 @@ In my continuous endeavor to optimize the behavior of the snake in the game, I'v
 
 Collision Penalty : -10
 To strongly dissuade the agent from crashing into the walls or itself, a substantial penalty has been introduced for any collisions.
+
 Consuming Food Reward : +10
 To emphasize the main goal of the game, I provide a significant reward for every food item consumed.
+
 Getting Closer to Food Reward : +0.05
 To promote a more proactive approach towards the target, a small reward is given when the snake moves closer to the food item.
+
 Moving Away from Food Penalty : -0.05
 To discourage wasteful moves, a penalty is introduced if the snake increases its distance from the food.
+
 Iteration Penalty : -1
 To discourage aimless wandering and encourage swift, purposeful movement, a small penalty is applied for every game iteration.
 
