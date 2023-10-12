@@ -31,7 +31,7 @@ BLACK = (0,0,0)
 BLOCK_SIZE = 20
 SPEED = 20
 
-class SnakeGameIA:
+class SnakeGameAI:
     
     def __init__(self, w=640, h=480):
         self.w = w
@@ -40,6 +40,7 @@ class SnakeGameIA:
         self.display = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption('Snake')
         self.clock = pygame.time.Clock()
+        self.reset()
     
     def reset(self):
         # init game state
@@ -80,7 +81,7 @@ class SnakeGameIA:
         if self.is_collision() or self.frame_iteration > 100*len(self.snake):
             game_over = True
             reward = -10
-            return game_over, self.score
+            return reward, game_over, self.score
             
         # 4. place new food or just move
         if self.head == self.food:
