@@ -29,7 +29,7 @@ BLUE2 = (0, 100, 255)
 BLACK = (0,0,0)
 
 BLOCK_SIZE = 20
-SPEED = 20
+SPEED = 100
 
 class SnakeGameAI:
     
@@ -78,11 +78,14 @@ class SnakeGameAI:
         # 3. check if game over
         reward = 0
         game_over = False
-        if self.is_collision() or self.frame_iteration > 100*len(self.snake):
+
+        if self.is_collision() or self.frame_iteration > 100*len(self.snake):   
             game_over = True
             reward = -10
             return reward, game_over, self.score
-            
+        
+        distance_before_move = self.distance_from_food(self.head)
+
         # 4. place new food or just move
         if self.head == self.food:
             self.score += 1
@@ -90,13 +93,23 @@ class SnakeGameAI:
             self._place_food()
         else:
             self.snake.pop()
-        
+
+        #Reward when get closer to food
+        distance_after_move = self.distance_from_food(self.head)
+        if distance_after_move < distance_before_move:
+            reward += 0.05
+        else:
+            reward -= 0.05
+
         # 5. update ui and clock
         self._update_ui()
         self.clock.tick(SPEED)
+
+        reward += -0.1 #penality for each iteration to reduce number of iteration during a game
         # 6. return game over and score
         return reward, game_over, self.score
     
+    #Modifications
     def is_collision(self, pt=None):
         if pt is None:
             pt = self.head
@@ -106,8 +119,9 @@ class SnakeGameAI:
         # hits itself
         if pt in self.snake[1:]:
             return True
-        
+
         return False
+
         
     def _update_ui(self):
         self.display.fill(BLACK)
@@ -152,4 +166,7 @@ class SnakeGameAI:
             y -= BLOCK_SIZE
             
         self.head = Point(x, y)
-            
+        
+    
+    def distance_from_food(self, point):
+        return np.linalg.norm(np.array(point) - np.array(self.food))
